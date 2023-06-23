@@ -7,10 +7,13 @@ function RecipeDetails() {
     const params = useParams();   
     const recipeId = params.id;
     const navigate = useNavigate();
+    const [recipeGeneralInfo, setRecipeGeneralInfo] = useState({});
     const [recipeSteps, setRecipeSteps] = useState([]);
+    const [recipeIngredients, setRecipeIngredients] = useState([]);
 
     useEffect(() => {
         fetchRecipeSteps();
+        fetchRecipeIngredients();
     }, [params]);
 
     let recipeHeaders = new Headers({
@@ -23,26 +26,73 @@ function RecipeDetails() {
         cache: "default",
     };
 
-    const recipeRequest = new Request(`https://api.spoonacular.com/recipes/${recipeId}/analyzedInstructions`);
-
     const fetchRecipeSteps = async () => {
         try {
+            let recipeSteps = [];
+            const recipeRequest = new Request(`https://api.spoonacular.com/recipes/${recipeId}/analyzedInstructions`);
             const response = await fetch(recipeRequest, recipeInit);
             const recipeSteps1 = await response.json();
-            const recipeSteps = await recipeSteps1[0].steps;
-            console.log(recipeSteps);
+            const recipeSteps2 = await recipeSteps1[0].steps;
+            for (let item of recipeSteps2) {
+                let newEntry = { num: item.number, step: item.step }
+                recipeSteps.push(newEntry);
+            }
             await setRecipeSteps(recipeSteps);
+            console.log('recipeSteps:', recipeSteps);
         } catch (e) {
             console.log(e);
-        }
+        };
+    } 
+
+    const fetchRecipeIngredients = async () => {
+        try {
+            let recipeIngredients = [];
+            const recipeRequest = new Request(`https://api.spoonacular.com/recipes/${recipeId}/information`);
+            const response = await fetch(recipeRequest, recipeInit);
+            const recipeInfo = await response.json();
+            const recipeGeneralInfo = { 
+                title: recipeInfo.title, 
+                image: recipeInfo.image, 
+                servings: recipeInfo.servings,  
+                minutesReady: recipeInfo.readyInMinutes,
+                dairyFree: recipeInfo.dairyFree,
+                glutenFree: recipeInfo.glutenFree,
+                lowFodmap: recipeInfo.lowFodmap,
+                vegan: recipeInfo.vegan,
+                vegetarian: recipeInfo.vegetarian
+            };
+            await setRecipeGeneralInfo(recipeGeneralInfo);
+
+            const recipeIngredients2 = await recipeInfo.extendedIngredients;
+            for (let item of recipeIngredients2) {
+                // console.log(item);
+                let newEntry = { id: item.id, name: item.original }
+                recipeIngredients.push(newEntry);
+            }
+            await setRecipeIngredients(recipeIngredients);
+            console.log('recipeIngredients:', recipeIngredients);
+        } catch (e) {
+            console.log(e);
+        };
     } 
 
     return(
         <>
             <h1>Recipe Details</h1>
-            { recipeSteps.length > 0 ?? recipeSteps.map(s => 
-                <li key={s.number}>{s.number}. {s.step}</li>
-            )}
+            <h2>{recipeGeneralInfo.title}</h2>
+            <img src={recipeGeneralInfo.image} alt={recipeGeneralInfo.title} />
+            <h3>Ingredients</h3>
+            <ul>
+                {recipeIngredients.map(s => 
+                        <li key={s.id}>{s.name}</li>
+                )}
+            </ul>
+            <h3>Steps</h3>
+            <ol>
+                {recipeSteps.map(s => 
+                    <li key={s.num}>{s.step}</li>
+                )}
+            </ol>
         </>
     );
 }

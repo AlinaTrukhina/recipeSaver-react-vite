@@ -16,7 +16,6 @@ function App() {
         />
         <Route path="/recipeDetails/:id" element={<RecipeDetails />} />
       </Routes>
-      <h1>Vite + React</h1>
     </>
   )
 }

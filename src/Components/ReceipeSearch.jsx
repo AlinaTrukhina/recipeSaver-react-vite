@@ -65,10 +65,10 @@ function RecipeSearch() {
             </thead>
         <tbody>
             {recipes.length > 0 && recipes.map(item => (
-                <tr>
+                <tr key={item.id}>
                     <td>{item.title}</td>
                     <td><img src={item.image} alt={item.title} /></td>
-                    <td><a href="recipe/:item.Id"><button>Details</button></a></td>
+                    <td><a href={`/recipeDetails/${item.id}`}><button>Details</button></a></td>
                 </tr>
             ))}
         </tbody>

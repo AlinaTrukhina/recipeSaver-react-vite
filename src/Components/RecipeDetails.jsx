@@ -37,8 +37,7 @@ function RecipeDetails() {
                 let newEntry = { num: item.number, step: item.step }
                 recipeSteps.push(newEntry);
             }
-            await setRecipeSteps(recipeSteps);
-            console.log('recipeSteps:', recipeSteps);
+            setRecipeSteps(recipeSteps);
         } catch (e) {
             console.log(e);
         };
@@ -65,12 +64,10 @@ function RecipeDetails() {
 
             const recipeIngredients2 = await recipeInfo.extendedIngredients;
             for (let item of recipeIngredients2) {
-                // console.log(item);
                 let newEntry = { id: item.id, name: item.original }
                 recipeIngredients.push(newEntry);
             }
-            await setRecipeIngredients(recipeIngredients);
-            console.log('recipeIngredients:', recipeIngredients);
+            setRecipeIngredients(recipeIngredients);
         } catch (e) {
             console.log(e);
         };
@@ -78,9 +75,13 @@ function RecipeDetails() {
 
     return(
         <>
+            <button><a href={`/`}>Back</a></button>
             <h1>Recipe Details</h1>
             <h2>{recipeGeneralInfo.title}</h2>
             <img src={recipeGeneralInfo.image} alt={recipeGeneralInfo.title} />
+            <p>Servings: {recipeGeneralInfo.servings}</p>
+            <p></p>
+            <p>Ready in: {recipeGeneralInfo.minutesReady} minutes</p>
             <h3>Ingredients</h3>
             <ul>
                 {recipeIngredients.map(s => 

@@ -20,11 +20,11 @@ function RecipeSearch() {
     const recipeRequest = new Request(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${searchTerm}&ranking=1&ignorePantry=true&number=5`);
 
     const fetchRecipes = async () => {
-        console.log(searchTerm);
+        // console.log(searchTerm);
         try {
             const response = await fetch(recipeRequest, recipeInit);
             const recipes = await response.json();
-            console.log(recipes);
+            // console.log(recipes);
             await setRecipes(recipes);
         } catch (e) {
             console.log(e);
@@ -38,41 +38,43 @@ function RecipeSearch() {
 
     return (
         <>
-        <h1>Search Recipes</h1>
-        <form action="" method="get" onSubmit={event=>searchRecipes(event)}>
-            <label htmlFor="searchTerm">Ingredient:</label>
-            <input 
-                onChange={e => {setSearchTerm(e.target.value)}}
-                type="text" 
-                id="searchTerm" 
-                name="searchTerm" 
-                value={searchTerm} 
-                pattern="[a-zA-Z]+"
-            />
-            <button type="submit" onClick={event=>searchRecipes(event)}>Search</button>
-        </form>
+        <div className="page">
+            <h1>Search Recipes</h1>
+            <form action="" method="get" onSubmit={event=>searchRecipes(event)}>
+                <label htmlFor="searchTerm">Ingredient:</label>
+                <input 
+                    onChange={e => {setSearchTerm(e.target.value)}}
+                    type="text" 
+                    id="searchTerm" 
+                    name="searchTerm" 
+                    value={searchTerm} 
+                    pattern="[a-zA-Z]+"
+                />
+                <button type="submit" onClick={event=>searchRecipes(event)}>Search</button>
+            </form>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>
-                        Title
-                    </th>
-                    <th>
-                        Photo
-                    </th>
-                </tr>
-            </thead>
-        <tbody>
-            {recipes.length > 0 && recipes.map(item => (
-                <tr key={item.id}>
-                    <td>{item.title}</td>
-                    <td><img src={item.image} alt={item.title} /></td>
-                    <td><a href={`/recipeDetails/${item.id}`}><button>Details</button></a></td>
-                </tr>
-            ))}
-        </tbody>
-    </table>
+            <table>
+            {recipes.length > 0 ? <thead>
+                    <tr>
+                        <th>
+                            Title
+                        </th>
+                        <th>
+                            Photo
+                        </th> 
+                    </tr>
+                </thead> : null }
+            <tbody>
+                {recipes.length > 0 && recipes.map(item => (
+                    <tr key={item.id}>
+                        <td>{item.title}</td>
+                        <td><img src={item.image} alt={item.title} /></td>
+                        <td><a href={`/recipeDetails/${item.id}`}><button>Details</button></a></td>
+                    </tr>
+                ))}
+            </tbody>
+            </table>
+        </div>
         </>
     );
 }

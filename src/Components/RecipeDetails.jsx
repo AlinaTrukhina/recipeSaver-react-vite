@@ -73,14 +73,15 @@ function RecipeDetails() {
         };
     } 
 
-    return(
+
+
+    return (
         <>
-            <button><a href={`/`}>Back</a></button>
+        <div className="page">
             <h1>Recipe Details</h1>
             <h2>{recipeGeneralInfo.title}</h2>
             <img src={recipeGeneralInfo.image} alt={recipeGeneralInfo.title} />
             <p>Servings: {recipeGeneralInfo.servings}</p>
-            <p></p>
             <p>Ready in: {recipeGeneralInfo.minutesReady} minutes</p>
             <h3>Ingredients</h3>
             <ul>
@@ -94,6 +95,7 @@ function RecipeDetails() {
                     <li key={s.num}>{s.step}</li>
                 )}
             </ol>
+        </div>
         </>
     );
 }

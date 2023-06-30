@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 const SPOONACULAR_API_KEY = import.meta.env.VITE_SPOONACULAR_API_KEY;
 
-function RecipeSearch() {
+function RecipeSearch2() {
 
     const [searchTerm, setSearchTerm] = useState('');
     const [recipes, setRecipes] = useState([]);

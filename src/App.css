@@ -19,6 +19,7 @@
   padding: 3rem 1.5rem 2.5rem 0.5rem;
   display: flex;
   flex-direction: column;
+  height: 100vh;
   color: white;
   background-color: darkslategrey;
 }
